@@ -12,7 +12,7 @@ import {
 import Rating from "../components/Rating";
 import axios from "axios";
 
-function ProductPage() {
+function ProductPage({ setCartItems, cartItems }) {
   const [product, setProduct] = useState([]);
   const [qty, setQty] = useState(1);
   const { id } = useParams();
@@ -29,15 +29,20 @@ function ProductPage() {
     fetchProduct();
   }, []);
 
-
   const deleteProduct = async (id) => {
     await axios
       .delete(`http://localhost:8000/product/${id}`)
       .then(navigate("/"));
   };
 
+  console.log(cartItems);
+
   const addToCartHandler = (e) => {
     e.preventDefault();
+    const copy = [...cartItems, product]
+    setCartItems(copy);
+    window.localStorage.setItem("cartItems", JSON.stringify(copy));
+
     console.log("added item");
   };
 

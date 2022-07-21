@@ -12,11 +12,14 @@ import AddProduct from "./pages/AddProduct";
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+console.log(cartItems)
 
   const fetchProducts = async () => {
     const { data } = await axios.get(`http://localhost:8000/products/`);
     setProducts(data);
   };
+
 
   return (
     <>
@@ -31,8 +34,21 @@ function App() {
                 <HomePage products={products} fetchProducts={fetchProducts} />
               }
             />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/cart" element={<CartPage />} />
+            <Route
+              path="/product/:id"
+              element={
+                <ProductPage
+                  setCartItems={setCartItems}
+                  cartItems={cartItems}
+                />
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <CartPage setCartItems={setCartItems} cartItems={cartItems} />
+              }
+            />
             <Route
               path="/update/:id"
               element={<EditProduct fetchProducts={fetchProducts} />}

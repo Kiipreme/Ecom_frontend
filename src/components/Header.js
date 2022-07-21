@@ -4,6 +4,7 @@ import * as FaIcons from "react-icons/fa";
 import * as BsIcons from "react-icons/bs";
 
 function Header() {
+ 
   return (
     <header>
       <Navbar bg="primary" expand="lg" collapseOnSelect>
@@ -12,7 +13,7 @@ function Header() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/cart">
+              <Nav.Link href="/cart" >
                 <FaIcons.FaShoppingCart />
                 Cart
               </Nav.Link>

@@ -10,13 +10,13 @@ import {
   Card,
 } from "react-bootstrap";
 
-function CartPage({ product }) {
-  const [cartItems, setCartItems] = useState([]);
+function CartPage({ cartItems, setCartItems }) {
   const { id } = useParams();
 
   console.log(cartItems);
 
   const addToCart = (product) => {
+    console.log(product);
     setCartItems([...cartItems, product]);
   };
 
@@ -24,20 +24,20 @@ function CartPage({ product }) {
     setCartItems(cartItems.filter((product) => product !== productRemove));
   };
 
-  console.log(setCartItems);
+  console.log(JSON.parse(window.localStorage.getItem("cartItems")));
 
   return (
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
         <ListGroup variant="flush">
-          {cartItems.map((item, idx) => (
+          {JSON.parse(window.localStorage.getItem("cartItems")).map((item, idx) => (
             <ListGroup.Item key={idx}>
               <Row>
                 <Col md={2}>
-                  <Image src={item.image} alt={item.name} fluid rounded />
+                  <Image src={item.img} alt={item.name} fluid rounded />
                 </Col>
-                
+
                 <Col md={3}>{item.name}</Col>
 
                 <Col md={2}>${item.price}</Col>
@@ -46,7 +46,7 @@ function CartPage({ product }) {
                   <Form.Control
                     as="select"
                     value={item.qty}
-                    onChange={(e) => addToCart()}
+                    onChange={(e) => addToCart(item)}
                   >
                     {[...Array(item.countInStock).keys()].map((x) => (
                       <option key={x + 1} value={x + 1}>
