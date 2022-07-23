@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import {
   Row,
   Col,
@@ -9,29 +8,37 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
+import * as BsIcons from "react-icons/bs";
 
 function CartPage({ cartItems, setCartItems }) {
-  const { id } = useParams();
 
-  console.log(cartItems);
+  const data = JSON.parse(window.localStorage.getItem("cartItems"));
 
   const addToCart = (product) => {
     console.log(product);
     setCartItems([...cartItems, product]);
   };
 
-  const removeFromCartHandler = (productRemove) => {
-    setCartItems(cartItems.filter((product) => product !== productRemove));
+  const removeFromCartHandler = (itemId) => {
+    const filterData = data.filter((item) => itemId !== item.id)
+    setCartItems(filterData);
+    window.localStorage.setItem("cartItems", JSON.stringify(filterData))
+    console.log(cartItems);
   };
 
-  console.log(JSON.parse(window.localStorage.getItem("cartItems")));
+  const calTotalItem = () => {
+    const subtotal = data.reduce((acc, item) => {
+      return acc + Number(item.qty);
+    }, 0);
+    return subtotal;
+  };
 
   return (
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
-        <ListGroup variant="flush">
-          {JSON.parse(window.localStorage.getItem("cartItems")).map((item, idx) => (
+        <ListGroup >
+          {data.map((item, idx) => (
             <ListGroup.Item key={idx}>
               <Row>
                 <Col md={2}>
@@ -60,8 +67,10 @@ function CartPage({ cartItems, setCartItems }) {
                   <Button
                     type="button"
                     variant="light"
-                    onClick={() => removeFromCartHandler(id)}
-                  ></Button>
+                    onClick={() => removeFromCartHandler(item.id)}
+                  >
+                    <BsIcons.BsFillTrashFill />
+                  </Button>
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -73,12 +82,8 @@ function CartPage({ cartItems, setCartItems }) {
         <Card>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-                items
-              </h2>
-              $
-              {cartItems
+              <h2>Subtotal ({calTotalItem()}) items</h2>$
+              {data
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>

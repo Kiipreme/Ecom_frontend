@@ -39,7 +39,8 @@ function ProductPage({ setCartItems, cartItems }) {
 
   const addToCartHandler = (e) => {
     e.preventDefault();
-    const copy = [...cartItems, product]
+    const prodCopy = {...product, qty}
+    const copy = [...cartItems, prodCopy];
     setCartItems(copy);
     window.localStorage.setItem("cartItems", JSON.stringify(copy));
 
@@ -48,7 +49,11 @@ function ProductPage({ setCartItems, cartItems }) {
 
   return (
     <div>
-      <Link to={`/update/${id}`} className="btn btn-dark my-3">
+      <Link to="/" className="btn btn-light ms-3">
+        Go Back
+      </Link>
+
+      <Link to={`/update/${id}`} className="btn btn-dark m-3">
         Edit
       </Link>
 
@@ -62,7 +67,7 @@ function ProductPage({ setCartItems, cartItems }) {
 
       <Row>
         <Col md={6}>
-          <Image src={product.img} alt={product.name} fluid />
+          <Image src={product.img} alt={product.name} className='productinfo' />
         </Col>
 
         <Col md={3}>

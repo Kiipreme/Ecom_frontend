@@ -17,11 +17,6 @@ function AddProduct() {
 
   const navigate = useNavigate();
 
-  const auth = {
-    username: "user",
-    password: "123",
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
